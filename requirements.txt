@@ -1,0 +1,5 @@
+discord
+discord_components
+youtube_dl
+python-dotenv
+PyNaCl
