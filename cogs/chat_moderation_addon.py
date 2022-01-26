@@ -115,7 +115,7 @@ class ChatModerationCog(commands.Cog):
             muted = discord.utils.get(ctx.guild.roles, name="Muted")
             await member.remove_roles(muted)
 
-            description = f"{member.mention} hasn't been muted!"
+            description = f"{member.mention} has been unmuted!"
             colour = discord.Colour.green()
 
         emb = bot_embed(self.client, description=description, colour=colour)
