@@ -59,7 +59,7 @@ async def on_ready():
 
 
 def load_cogs():
-    """ load all cogsgi
+    """ load all cogs
     """
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
