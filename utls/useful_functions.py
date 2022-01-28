@@ -47,7 +47,7 @@ def double_call_if_fail(func):
 
 
 def bot_embed(client: discord.Client, title: Optional[str] = '', description: Optional[str] = '',
-              colour=Optional[discord.Colour]) -> discord.Embed:
+              colour: Optional[discord.Colour] = None) -> discord.Embed:
     """create good-looking answer when replying to user
 
     :param client: discord.Client

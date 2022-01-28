@@ -196,17 +196,19 @@ class MusicCog(commands.Cog):
     @commands.check(special_permission_checker)
     @commands.check(right_channel_checker)
     async def leave(self, ctx: commands.Context):
-        """force bot to leave channel. by himself he leaves if not playing music
+        """
+        force bot to leave channel. by himself he leaves if not playing music
         approximately 2 minutes
 
         :param ctx: commands.Context
         """
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+
         if voice:
             await voice.disconnect()
             title = "Leaving voice channel. Bye bye."
         else:
-            title = "Not in voice channel"
+            title = "Bot not in voice channel"
 
         emb = bot_embed(self.client, title=title)
         await ctx.reply(embed=emb)
@@ -218,12 +220,17 @@ class MusicCog(commands.Cog):
         """:param ctx: commands.Context
         """
         voice = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
-        if voice.is_playing():
+
+        if not voice:
+            title = "Bot not in voice channel. Nothing to pause."
+        elif voice.is_playing():
             voice.pause()
+            title = "Paused"
         else:
             title = "No audio to pause"
-            emb = bot_embed(self.client, title=title)
-            await ctx.reply(embed=emb)
+
+        emb = bot_embed(self.client, title=title)
+        await ctx.reply(embed=emb)
 
     @commands.command(name="resume", help="Resume song if it is paused")
     @commands.check(special_permission_checker)
@@ -281,7 +288,9 @@ class MusicCog(commands.Cog):
         :param ctx: commands.Context
         :param error: commands.CommandError
         """
-        print(ctx.command.name, error)
+        if ctx.command:
+            print(ctx.command.cog_name, ctx.command.name, end=" ")
+        print(error)
 
 
 def setup(client):
