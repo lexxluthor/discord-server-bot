@@ -2,9 +2,12 @@
 this module is responsible for all music-related stuff
 playing, skipping, pausing, etc.
 """
+from datetime import timedelta
+
 import discord
 from discord.ext import commands
 from youtube_dl import YoutubeDL
+
 
 from utls.useful_functions import bot_embed, right_channel_checker, special_permission_checker, double_call_if_fail
 
@@ -96,14 +99,13 @@ class MusicCog(commands.Cog):
                 "Could not download the song. Incorrect format try another keyword. "
                 "This could be due to playlist or a livestream format.")
         else:
-            minutes = song['duration'] // 60
-            seconds = song['duration'] - minutes * 60
+            duration = "{:0>8}".format(str(timedelta(seconds=song['duration'])))
 
             emb = discord.Embed(title=song['title'],
                                 description='Song added to queue!', colour=discord.Colour.blurple())
             emb.set_thumbnail(url=song['thumbnail'])
             emb.set_author(name=song['channel'], url=song['channel_url'])
-            emb.add_field(name="Duration", value=f"{minutes}:{seconds}")
+            emb.add_field(name="Duration", value=f"{duration}")
 
             await ctx.reply(embed=emb)
 

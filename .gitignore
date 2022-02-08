@@ -1,2 +1,3 @@
 /cogs/chat_commands_addon.py
 Procfile
+/cogs/notification_addon.py
