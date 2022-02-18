@@ -1,5 +1,8 @@
+bs4
 discord
 discord_components
 youtube_dl
 python-dotenv
 PyNaCl
+requests
+bs4

@@ -22,6 +22,7 @@ class MusicCog(commands.Cog):
 
         # options for music downloading/playing.
         self.YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist': 'True'}
+        self.YDL_OPTIONS_COOKIES = {'format': 'bestaudio', 'noplaylist': 'True', 'cookiefile': 'coookies.txt'}
         self.YDL_OPTIONS_PLAYLIST = {'format': 'bestaudio', 'noplaylist': 'False'}
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
                                'options': '-vn'}
@@ -39,6 +40,7 @@ class MusicCog(commands.Cog):
 
         :param item: str
         """
+        flag = True
         with YoutubeDL(self.YDL_OPTIONS) as ydl:
             try:
                 if item.startswith("https"):
@@ -47,7 +49,18 @@ class MusicCog(commands.Cog):
                     info = ydl.extract_info("ytsearch:%s" % item, download=False)['entries'][0]
             except Exception as e:
                 print(e)
-                return False
+                flag = False
+
+        if not flag:
+            with YoutubeDL(self.YDL_OPTIONS_COOKIES) as ydl:
+                try:
+                    if item.startswith("https"):
+                        info = ydl.extract_info(item, download=False)
+                    else:
+                        info = ydl.extract_info("ytsearch:%s" % item, download=False)['entries'][0]
+                except Exception as e:
+                    print(e)
+                    return False
 
         return {'source': info['formats'][0]['url'], 'title': info['title'], 'duration': info['duration'],
                 'channel': info['channel'], 'thumbnail': info['thumbnail'], 'channel_url': info['channel_url']}
@@ -78,10 +91,10 @@ class MusicCog(commands.Cog):
                 voice.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx))
             except discord.ClientException:
                 """ if I try to skip track, it is raise ClientException, idk why. mb it is problem with vc.stop"""
-                pass
+                print('Trying to skip tracks')
             except AttributeError:
                 """ if bot leaves, he raise AttributeError"""
-                pass
+                print("Trying to leave voice channel")
             self.music_queue.pop(0)
 
     async def play_song(self, ctx: commands.Context, song):

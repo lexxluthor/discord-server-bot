@@ -78,7 +78,7 @@ class ChatExperienceCog(commands.Cog):
 
     @commands.command(name='level', help='Display user current level')
     @commands.check(right_channel_checker)
-    async def level(self, ctx: commands.Context):
+    async def level(self, ctx: commands.Context, member: discord.Member = None):
         """show user his level information
 
         :param ctx: commands.Context
@@ -86,9 +86,14 @@ class ChatExperienceCog(commands.Cog):
         """
         with open("users.json", "r", encoding='utf8') as f:
             users = json.load(f)
-        user = users[str(ctx.author.id)]
+        if member:
+            msg = f"User {member.name} has"
+            user = users[str(member.id)]
+        else:
+            msg = "You have"
+            user = users[str(ctx.author.id)]
 
-        await ctx.reply(f"You have {user['level']} level and {user['exp']} experience.")
+        await ctx.reply(f"{msg} {user['level']} level and {user['exp']} experience.")
 
 
 def setup(client):

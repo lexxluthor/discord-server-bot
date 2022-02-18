@@ -35,7 +35,7 @@ async def unload(ctx, extension):
     print(f"unload {extension}")
 
     Bot.unload_extension(f"cogs.{extension}")
-    await ctx.send(f"{extension} extension successfully loaded.")
+    await ctx.send(f"{extension} extension successfully unloaded.")
 
 
 @Bot.command()
@@ -50,7 +50,7 @@ async def reload(ctx, extension):
 
     Bot.unload_extension(f"cogs.{extension}")
     Bot.load_extension(f"cogs.{extension}")
-    await ctx.send(f"{extension} extension successfully loaded.")
+    await ctx.send(f"{extension} extension successfully reloaded.")
 
 
 @Bot.event
@@ -67,10 +67,9 @@ def load_cogs():
             print(f"cogs.{filename[:-3]}")
 
 
-load_cogs()
-
-
-Bot.run(TOKEN)
+if __name__ == '__main__':
+    load_cogs()
+    Bot.run(TOKEN)
 
 #
 # @client.event
