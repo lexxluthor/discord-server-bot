@@ -152,11 +152,8 @@ class ChatModerationCog(commands.Cog):
 
         if time_to_wait:
             await add_to_moderation_list('mute', ctx.guild, member, time_to_wait)
-            print(1)
             await asyncio.sleep(time_to_wait+1)
-            print(2)
             await remove_from_moderation_list('mute', ctx.guild.id, member.id, self.client)
-            print(3)
 
     @commands.command(name="unmute", help="Unmute selected user in text channels.")
     @commands.has_permissions(manage_messages=True, manage_roles=True)
