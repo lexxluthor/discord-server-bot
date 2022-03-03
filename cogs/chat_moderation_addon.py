@@ -169,6 +169,8 @@ class ChatModerationCog(commands.Cog):
             colour = discord.Colour.orange()
         else:
             await remove_from_moderation_list('mute', ctx.guild.id, member.id, self.client, force=True)
+            muted = discord.utils.get(ctx.guild.roles, name="Muted")
+            await member.remove_roles(muted)
 
             description = f"{member.mention} has been unmuted!"
             colour = discord.Colour.green()

@@ -22,7 +22,7 @@ class MusicCog(commands.Cog):
 
         # options for music downloading/playing.
         self.YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist': 'True'}
-        self.YDL_OPTIONS_COOKIES = {'format': 'bestaudio', 'noplaylist': 'True', 'cookiefile': 'coookies.txt'}
+        self.YDL_OPTIONS_COOKIES = {'format': 'bestaudio', 'noplaylist': 'True', 'cookiefile': 'cookies.txt'}
         self.YDL_OPTIONS_PLAYLIST = {'format': 'bestaudio', 'noplaylist': 'False'}
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
                                'options': '-vn'}
@@ -110,7 +110,8 @@ class MusicCog(commands.Cog):
         if not song:
             await ctx.reply(
                 "Could not download the song. Incorrect format try another keyword. "
-                "This could be due to playlist or a livestream format.")
+                "This could be due to playlist or a livestream format. Or song is age restriced and can "
+                "be inappropriate for some users. ")
         else:
             duration = "{:0>8}".format(str(timedelta(seconds=song['duration'])))
 
@@ -225,7 +226,7 @@ class MusicCog(commands.Cog):
         else:
             title = "Bot not in voice channel"
 
-        emb = bot_embed(self.client, title=title)
+        emb = bot_embed(client=self.client, title=title)
         await ctx.reply(embed=emb)
 
     @commands.command(name="pause", help="Pause current song", pass_context=True)
