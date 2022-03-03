@@ -154,6 +154,9 @@ class ChatModerationCog(commands.Cog):
             await add_to_moderation_list('mute', ctx.guild, member, time_to_wait)
             await asyncio.sleep(time_to_wait+1)
             await remove_from_moderation_list('mute', ctx.guild.id, member.id, self.client)
+        else:
+            await add_to_moderation_list('mute', ctx.guild, member, 10000000000)
+
 
     @commands.command(name="unmute", help="Unmute selected user in text channels.")
     @commands.has_permissions(manage_messages=True, manage_roles=True)
@@ -169,8 +172,6 @@ class ChatModerationCog(commands.Cog):
             colour = discord.Colour.orange()
         else:
             await remove_from_moderation_list('mute', ctx.guild.id, member.id, self.client, force=True)
-            muted = discord.utils.get(ctx.guild.roles, name="Muted")
-            await member.remove_roles(muted)
 
             description = f"{member.mention} has been unmuted!"
             colour = discord.Colour.green()
